@@ -1,0 +1,11 @@
+{
+  "name": "flowisebrain",
+  "version": "1.0.0",
+  "dependencies": {
+    "flowise": "^2.1.0",
+    "zod": "3.22.4"
+  },
+  "overrides": {
+    "zod": "3.22.4"
+  }
+}

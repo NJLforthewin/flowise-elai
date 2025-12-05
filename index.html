@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro Manila Auto Traders | Premium Used Cars</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-content">
+            <div class="logo">
+                <i class="fa-solid fa-car-side"></i> Metro<span class="highlight">Auto</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#inventory">Inventory</a></li>
+                <li><a href="#financing">Financing</a></li>
+                <li><a href="#contact" class="btn-nav">Visit Showroom</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="overlay"></div>
+        <div class="hero-text">
+            <h1>Drive Your Dream Car Today.</h1>
+            <p>Quality pre-owned vehicles in Quezon City. Verified papers. Easy financing.</p>
+            <a href="#inventory"><button class="btn-hero">View Inventory</button></a>
+        </div>
+    </header>
+
+    <!-- INVENTORY SECTION (UPDATED FOR SLIDER) -->
+    <section id="inventory" class="inventory">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Arrivals</h2>
+                <p>Swipe to view our available units.</p>
+            </div>
+
+            <!-- FILTER BUTTONS -->
+            <div class="filter-container">
+                <button class="filter-btn active" onclick="filterCars('all', this)">All Units</button>
+                <button class="filter-btn" onclick="filterCars('Sedan', this)">Sedans</button>
+                <button class="filter-btn" onclick="filterCars('SUV', this)">SUVs</button>
+                <button class="filter-btn" onclick="filterCars('Pickup', this)">Pickups</button>
+                <button class="filter-btn" onclick="filterCars('Reserved', this)">Reserved</button>
+            </div>
+
+            <!-- CAR SLIDER WRAPPER -->
+            <div class="slider-wrapper">
+                <button class="slider-arrow left" onclick="scrollCards(-1)">&#10094;</button>
+                
+                <div class="car-grid" id="carGrid">
+                    <!-- Cars will appear here automatically via script.js -->
+                </div>
+
+                <button class="slider-arrow right" onclick="scrollCards(1)">&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINANCING CALCULATOR -->
+    <section id="financing" class="financing">
+        <div class="container">
+            <div class="calc-box">
+                <h2><i class="fa-solid fa-calculator"></i> Loan Calculator</h2>
+                <div class="calc-grid">
+                    <div class="calc-inputs">
+                        <label>Vehicle Price (₱)</label>
+                        <input type="number" id="carPrice" value="650000">
+                        
+                        <label>Downpayment (₱)</label>
+                        <input type="number" id="downPayment" value="200000">
+                        
+                        <label>Loan Term</label>
+                        <select id="loanTerm">
+                            <option value="12">12 Months</option>
+                            <option value="24">24 Months</option>
+                            <option value="36" selected>36 Months</option>
+                            <option value="48">48 Months</option>
+                        </select>
+                        <button class="btn-calc" onclick="calculateLoan()">Calculate Payment</button>
+                    </div>
+                    <div class="calc-result">
+                        <p>Estimated Monthly Payment</p>
+                        <h1 id="monthlyResult">₱0.00</h1>
+                        <small>*Estimates only. Subject to bank approval.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h3>Metro<span class="highlight">Auto</span></h3>
+                    <p>The most trusted used car dealer in the metro.</p>
+                </div>
+                <div>
+                    <h4>Visit Us</h4>
+                    <p><i class="fa-solid fa-location-dot"></i> 123 Amoranto St, Quezon City</p>
+                    <p><i class="fa-solid fa-clock"></i> Mon-Sat: 8:00 AM - 5:00 PM</p>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <p><i class="fa-solid fa-phone"></i> (02) 8123-4567</p>
+                    <p><i class="fa-brands fa-facebook"></i> @MetroAutoTraders</p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2024 Metro Manila Auto Traders. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL POPUP -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="view-details">
+                <img id="modalImg" src="" alt="Car Image">
+                <div class="modal-info">
+                    <h2 id="modalTitle">Car Name</h2>
+                    <h3 id="modalPrice" class="highlight">Price</h3>
+                    <p id="modalDesc">This unit is currently available in our Quezon City showroom. It has passed our 150-point inspection.</p>
+                    <div class="modal-specs">
+                        <span><i class="fa-solid fa-calendar"></i> Verified Papers</span>
+                        <span><i class="fa-solid fa-check-circle"></i> Mechanic Inspected</span>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="btn-buy" onclick="showForm()">Reserve Now</button>
+                        <button class="btn-close" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div id="view-form" style="display: none; padding: 40px;">
+                <h2>Reservation Request</h2>
+                <p>Enter your details to hold this unit for 24 hours.</p>
+                <form onsubmit="event.preventDefault(); submitReservation();">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Juan Dela Cruz" required class="full-width">
+                    <label>Phone Number</label>
+                    <input type="text" placeholder="0917-XXX-XXXX" required class="full-width">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="juan@email.com" required class="full-width">
+                    <div class="modal-buttons" style="margin-top: 20px;">
+                        <button type="submit" class="btn-buy">Confirm Reservation</button>
+                        <button type="button" class="btn-close" onclick="backToDetails()">Back</button>
+                    </div>
+                </form>
+            </div>
+            <div id="view-success" style="display: none; padding: 50px; text-align: center;">
+                <i class="fa-solid fa-circle-check" style="font-size: 5rem; color: #4caf50; margin-bottom: 20px;"></i>
+                <h2>Reservation Received!</h2>
+                <p>Thank you. Our sales agent will call you within 1 hour to finalize the payment.</p>
+                <button class="btn-buy" onclick="closeModal()" style="margin-top: 20px;">Okay, Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+  <!-- FINAL STABLE VERSION: SIDE-BY-SIDE + DRIFTING CAR -->
+    <script type="module">
+        import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+        
+        Chatbot.init({
+            chatflowid: "b252bb5c-06c4-4cf0-9a58-4c5a77dd7729",
+            apiHost: "http://localhost:3000",
+            theme: {
+                button: {
+                    right: 20, 
+                    bottom: 20,
+                    backgroundColor: "#ffffff", 
+                    left: "auto",
+                    size: 65, 
+                    dragAndDrop: true,
+                    iconColor: "#303235", 
+                    /* CLOSED STATE: Front View Car */
+                    customIconSrc: "https://cdn-icons-png.flaticon.com/512/2555/2555013.png", 
+                },
+                chatWindow: {
+                    showTitle: true,
+                    title: "Metro Auto Support",
+                    titleAvatarSrc: "https://cdn-icons-png.flaticon.com/512/2555/2555013.png",
+                    welcomeMessage: "👋 **Welcome to Metro Auto!**\n\nI can show you our:\n🚗 **Latest Inventory**\n💰 **Financing Options**\n📍 **Showroom Location**",
+                    backgroundColor: "#f8f9fa",
+                    /* Compact Size */
+                    height: 550,
+                    width: 350,
+                    fontSize: 14,
+                    
+                    botMessage: {
+                        backgroundColor: "#ffffff", 
+                        textColor: "#333333",
+                        showAvatar: true,
+                        avatarSrc: "https://cdn-icons-png.flaticon.com/512/2555/2555013.png", 
+                    },
+                    userMessage: {
+                        backgroundColor: "#333333", 
+                        textColor: "#ffffff",
+                        showAvatar: true,
+                        avatarSrc: "https://cdn-icons-png.flaticon.com/512/3097/3097180.png",
+                    },
+                    textInput: {
+                        placeholder: "Ask about a car...",
+                        backgroundColor: "#ffffff",
+                        textColor: "#333333",
+                        sendButtonColor: "#d32f2f",
+                    }
+                },
+                customCSS: `
+
+                    /* --- 3. HEADER (Metro Red + White Text) --- */
+                    .flex.flex-row.items-center.w-full.absolute.top-0 {
+                        background: #d32f2f !important;
+                        border-radius: 16px 16px 0 0 !important;
+                        border-bottom: 1px solid #b71c1c !important;
+                    }
+                    .flex.flex-row.items-center.w-full.absolute.top-0 span {
+                        color: white !important;
+                        font-weight: 700 !important;
+                    }
+
+                    /* --- 4. CLOSE BUTTON VISIBILITY --- */
+                    .flex.flex-row.items-center.w-full.absolute.top-0 button svg {
+                        fill: white !important;
+                        stroke: white !important;
+                        color: white !important;
+                    }
+                    .flex.flex-row.items-center.w-full.absolute.top-0 button svg path {
+                        fill: white !important;
+                        stroke: white !important;
+                    }
+
+                    /* --- 5. NEW CHAT BUTTON --- */
+                    button[title="Reset Chat"] {
+                        background-color: #b71c1c !important;
+                        border-radius: 20px !important;
+                        padding: 0 12px !important;
+                        height: 28px !important;
+                        width: auto !important;
+                        margin-right: 30px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        border: 1px solid #d32f2f !important;
+                    }
+                    button[title="Reset Chat"] svg { display: none !important; }
+                    button[title="Reset Chat"]::after {
+                        content: 'New Chat';
+                        font-size: 11px !important;
+                        font-weight: bold !important;
+                        color: white !important;
+                    }
+
+                    /* --- 6. GENERAL UI --- */
+                    #lite-badge { font-size: 0 !important; pointer-events: none !important; cursor: default !important; }
+                    #lite-badge::after { content: '😛' !important; font-size: 16px !important; display: inline-block !important; }
+                    .chatbot-input { background: transparent !important; border: none !important; }
+                    .chatbot-input > div { background: white !important; border-radius: 25px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; border: 1px solid #eee !important; margin: 0 8px !important; }
+                    
+                    .flowise-chatbot-button { 
+                        border: 1px solid #e5e7eb !important; 
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important; 
+                    }
+                `
+            }
+        });
+    </script>
+
+</body>
+</html>
