@@ -8,7 +8,7 @@ const carInventory = [
         mileage: "12,000 km",
         transmission: "Automatic",
         status: "Available",
-        img: "https://images.unsplash.com/photo-1623869675781-804f762673d2?auto=format&fit=crop&w=600&q=80"
+        img: "theo-lonic-TkF_mDULpdw-unsplash.jpg"
     },
     {
         id: 2,
@@ -48,7 +48,7 @@ const carInventory = [
         mileage: "25,000 km",
         transmission: "Automatic",
         status: "Available",
-        img: "https://images.unsplash.com/photo-1594502184342-28f3790f4024?auto=format&fit=crop&w=600&q=80"
+        img: "luke-thornton-O489L_ixvPw-unsplash.jpg"
     },
     {
         id: 6,
